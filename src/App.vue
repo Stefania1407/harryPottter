@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <h1>Harry Potter API</h1>
+    <h2>Juan Sebastian Sanchez Hincapie</h2>
+    <h2>Miguel Angel Patiño Franco</h2>
     <CharactersList />
-    <h3>Juan Sebastian Sanchez Hincapie</h3>
-    <h3>Miguel Angel Patiño Franco</h3>
   </div>
 </template>
 

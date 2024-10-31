@@ -7,10 +7,13 @@
         :key="character.id"
         class="character-item"
       >
-        <span class="character-name">{{ character.name }}</span>
+        <span class="character-name" @click="selectCharacter(character)">
+          {{ character.name }}
+        </span>
         <span class="character-house">{{ character.house }}</span>
       </li>
     </ul>
+
     <!-- Botón para mostrar más personajes -->
     <button
       v-if="displayedCharacters.length < characters.length"
@@ -18,6 +21,38 @@
     >
       Mostrar más
     </button>
+
+    <!-- Detalles del personaje seleccionado -->
+    <div v-if="selectedCharacter" class="character-detail">
+      <h3>Detalles de {{ selectedCharacter.name }}</h3>
+      <img
+        :src="selectedCharacter.image"
+        alt="Character Image"
+        class="character-image"
+      />
+      <p>
+        <strong>Apodos:</strong>
+        {{ selectedCharacter.alternate_names.join(", ") }}
+      </p>
+      <p><strong>Casa:</strong> {{ selectedCharacter.house }}</p>
+      <p><strong>Género:</strong> {{ selectedCharacter.gender }}</p>
+      <p><strong>Especie:</strong> {{ selectedCharacter.species }}</p>
+      <p><strong>Actor:</strong> {{ selectedCharacter.actor }}</p>
+      <p>
+        <strong>Fecha de Nacimiento:</strong>
+        {{ selectedCharacter.dateOfBirth }}
+      </p>
+      <p><strong>Patronus:</strong> {{ selectedCharacter.patronus }}</p>
+      <p>
+        <strong>Wand:</strong> {{ selectedCharacter.wand.wood }} ({{
+          selectedCharacter.wand.length
+        }}
+        inches)
+      </p>
+      <p><strong>Ancestry:</strong> {{ selectedCharacter.ancestry }}</p>
+      <button @click="deselectCharacter">Cerrar</button>
+      <!-- Botón para cerrar detalles -->
+    </div>
   </div>
 </template>
 
@@ -25,11 +60,42 @@
 import { defineComponent, ref, onMounted, computed } from "vue"; // Agrega computed aquí
 import { fetchCharacters } from "@/services/api";
 
+// Define las interfaces para el tipo de personaje
+interface Wand {
+  wood: string;
+  core: string;
+  length: number;
+}
+
+interface Character {
+  id: string;
+  name: string;
+  alternate_names: string[];
+  species: string;
+  gender: string;
+  house: string;
+  dateOfBirth: string;
+  yearOfBirth: number;
+  wizard: boolean;
+  ancestry: string;
+  eyeColour: string;
+  hairColour: string;
+  wand: Wand;
+  patronus: string;
+  hogwartsStudent: boolean;
+  hogwartsStaff: boolean;
+  actor: string;
+  alternate_actors: string[];
+  alive: boolean;
+  image: string;
+}
+
 export default defineComponent({
   name: "MyComponent",
   setup() {
-    const characters = ref([]); // Lista completa de personajes
+    const characters = ref<Character[]>([]); // Lista completa de personajes
     const itemsPerPage = ref(10); // Cantidad de personajes a mostrar inicialmente
+    const selectedCharacter = ref<Character | null>(null); // Estado para el personaje seleccionado
 
     // Computed property para mostrar solo los personajes que se deben mostrar
     const displayedCharacters = computed(() => {
@@ -41,6 +107,16 @@ export default defineComponent({
       itemsPerPage.value += 10; // Incrementa el número de personajes mostrados
     };
 
+    // Función para seleccionar un personaje y mostrar su información
+    const selectCharacter = (character: Character) => {
+      selectedCharacter.value = character; // Guarda el personaje seleccionado
+    };
+
+    // Función para deseleccionar el personaje
+    const deselectCharacter = () => {
+      selectedCharacter.value = null; // Resetea el personaje seleccionado
+    };
+
     onMounted(async () => {
       characters.value = await fetchCharacters(); // Carga los personajes al montar
     });
@@ -49,6 +125,9 @@ export default defineComponent({
       characters,
       displayedCharacters,
       showMore,
+      selectCharacter,
+      deselectCharacter,
+      selectedCharacter,
     };
   },
 });
@@ -74,6 +153,7 @@ export default defineComponent({
 /* Estilos para el nombre del personaje */
 .character-name {
   font-weight: bold;
+  cursor: pointer; /* Indica que es clickeable */
 }
 
 /* Estilos para la "caja" de la casa del personaje */
@@ -100,5 +180,21 @@ button {
 
 button:hover {
   background-color: #357ab8;
+}
+
+/* Estilos para los detalles del personaje */
+.character-detail {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.character-image {
+  width: 150px; /* Ajusta el tamaño de la imagen */
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
 }
 </style>

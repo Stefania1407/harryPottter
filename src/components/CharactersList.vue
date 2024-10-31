@@ -1,28 +1,29 @@
 <template>
   <div class="character-list">
-    <h2>Characters</h2>
-    <ul>
-      <li
-        v-for="character in displayedCharacters"
-        :key="character.id"
-        class="character-item"
+    <!-- Contenedor para la lista de personajes -->
+    <div class="character-item-container">
+      <h2>Characters</h2>
+      <ul>
+        <li
+          v-for="character in displayedCharacters"
+          :key="character.id"
+          class="character-item"
+        >
+          <span class="character-name" @click="selectCharacter(character)">
+            {{ character.name }}
+          </span>
+          <span class="character-house">{{ character.house }}</span>
+        </li>
+      </ul>
+      <button
+        v-if="displayedCharacters.length < characters.length"
+        @click="showMore"
       >
-        <span class="character-name" @click="selectCharacter(character)">
-          {{ character.name }}
-        </span>
-        <span class="character-house">{{ character.house }}</span>
-      </li>
-    </ul>
+        Mostrar más
+      </button>
+    </div>
 
-    <!-- Botón para mostrar más personajes -->
-    <button
-      v-if="displayedCharacters.length < characters.length"
-      @click="showMore"
-    >
-      Mostrar más
-    </button>
-
-    <!-- Detalles del personaje seleccionado -->
+    <!-- Contenedor para los detalles del personaje -->
     <div v-if="selectedCharacter" class="character-detail">
       <h3>Detalles de {{ selectedCharacter.name }}</h3>
       <img
@@ -51,7 +52,6 @@
       </p>
       <p><strong>Ancestry:</strong> {{ selectedCharacter.ancestry }}</p>
       <button @click="deselectCharacter">Cerrar</button>
-      <!-- Botón para cerrar detalles -->
     </div>
   </div>
 </template>
@@ -134,67 +134,105 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* Contenedor principal con diseño de dos columnas */
 .character-list {
-  font-family: Arial, sans-serif;
-  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #2b2b2b;
+  background-color: #f3f2ed;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex; /* Activa el diseño en flex */
+  gap: 20px; /* Espacio entre la lista y los detalles */
+}
+
+/* Columna de la lista de personajes */
+.character-item-container {
+  flex: 1;
+  max-width: 300px; /* Ancho máximo de la columna de la lista */
 }
 
 .character-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  border-bottom: 1px solid #d1c7b9;
 }
 
 .character-item:last-child {
   border-bottom: none;
 }
 
-/* Estilos para el nombre del personaje */
 .character-name {
   font-weight: bold;
-  cursor: pointer; /* Indica que es clickeable */
+  cursor: pointer;
+  color: #5a3e2b;
+  font-size: 1em;
 }
 
-/* Estilos para la "caja" de la casa del personaje */
 .character-house {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #e2d6c1;
+  color: #4a2c20;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 0.9em;
-  font-weight: bold;
+  font-size: 0.85em;
 }
 
-/* Estilo para el botón */
+/* Botón para mostrar más personajes */
 button {
   margin-top: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 8px 16px;
+  font-size: 0.9em;
   cursor: pointer;
-  background-color: #4a90e2;
-  color: white;
+  background-color: #3e1e10;
+  color: #f7f1e3;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5c3b2e;
+}
+
+/* Columna de detalles del personaje */
+.character-detail {
+  flex: 2; /* Mayor espacio para la columna de detalles */
+  border: 1px solid #d1c7b9;
+  padding: 20px;
+  border-radius: 4px;
+  background-color: #f9f7f2;
+  color: #2b2b2b;
+}
+
+.character-detail h3 {
+  color: #4a2c20;
+}
+
+.character-image {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.character-detail p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+
+.character-detail button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  cursor: pointer;
+  background-color: #3e1e10;
+  color: #f7f1e3;
   border: none;
   border-radius: 4px;
 }
 
-button:hover {
-  background-color: #357ab8;
-}
-
-/* Estilos para los detalles del personaje */
-.character-detail {
-  margin-top: 20px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-}
-
-.character-image {
-  width: 150px; /* Ajusta el tamaño de la imagen */
-  height: auto;
-  border-radius: 8px;
-  margin: 10px 0;
+.character-detail button:hover {
+  background-color: #5c3b2e;
 }
 </style>

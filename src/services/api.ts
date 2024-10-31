@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://hp-api.onrender.com/api",
+  baseURL: "https://hp-api.onrender.com/apia",
   headers: {
     "Content-Type": "application/json",
   },

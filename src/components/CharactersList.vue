@@ -1,5 +1,6 @@
 <template>
   <div class="character-list">
+<<<<<<< HEAD
     <!-- Contenedor para la lista de personajes -->
     <div class="character-item-container">
       <h2>Characters</h2>
@@ -18,6 +19,18 @@
       <button
         v-if="displayedCharacters.length < characters.length"
         @click="showMore"
+=======
+    <h2>Characters</h2>
+
+    <!-- Mostrar mensaje de error si existe -->
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <ul>
+      <li
+        v-for="character in displayedCharacters"
+        :key="character.id"
+        class="character-item"
+>>>>>>> 959fed99ea309cfb2c53ca869c3b1b90e4783a81
       >
         Mostrar más
       </button>
@@ -96,6 +109,7 @@ export default defineComponent({
     const characters = ref<Character[]>([]); // Lista completa de personajes
     const itemsPerPage = ref(10); // Cantidad de personajes a mostrar inicialmente
     const selectedCharacter = ref<Character | null>(null); // Estado para el personaje seleccionado
+    const errorMessage = ref<string | null>(null); // Estado para mensajes de error
 
     // Computed property para mostrar solo los personajes que se deben mostrar
     const displayedCharacters = computed(() => {
@@ -118,7 +132,13 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      characters.value = await fetchCharacters(); // Carga los personajes al montar
+      try {
+        characters.value = await fetchCharacters(); // Carga los personajes al montar
+      } catch (error) {
+        errorMessage.value =
+          "Error al cargar los personajes. Inténtalo de nuevo más tarde."; // Mensaje de error
+        console.error(error); // Log del error en la consola para desarrollo
+      }
     });
 
     return {
@@ -128,6 +148,7 @@ export default defineComponent({
       selectCharacter,
       deselectCharacter,
       selectedCharacter,
+      errorMessage, // Exponer el mensaje de error al template
     };
   },
 });
@@ -234,5 +255,12 @@ button:hover {
 
 .character-detail button:hover {
   background-color: #5c3b2e;
+}
+
+/* Estilo para mensajes de error */
+.error-message {
+  color: red; /* Color rojo para el mensaje de error */
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 </style>

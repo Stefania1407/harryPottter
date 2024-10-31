@@ -1,6 +1,5 @@
 <template>
   <div class="character-list">
-<<<<<<< HEAD
     <!-- Contenedor para la lista de personajes -->
     <div class="character-item-container">
       <h2>Characters</h2>
@@ -19,21 +18,14 @@
       <button
         v-if="displayedCharacters.length < characters.length"
         @click="showMore"
-=======
-    <h2>Characters</h2>
+      >
+        Show More
+      </button>
+    </div>
 
     <!-- Mostrar mensaje de error si existe -->
-    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-
-    <ul>
-      <li
-        v-for="character in displayedCharacters"
-        :key="character.id"
-        class="character-item"
->>>>>>> 959fed99ea309cfb2c53ca869c3b1b90e4783a81
-      >
-        Mostrar más
-      </button>
+    <div v-if="errorMessage" class="error-message">
+      {{ errorMessage }}
     </div>
 
     <!-- Contenedor para los detalles del personaje -->

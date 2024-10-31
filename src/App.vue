@@ -1,27 +1,20 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div id="app">
+    <h1>Harry Potter API</h1>
+    <CharactersList />
+    <h3>Juan Sebastian Sanchez Hincapie</h3>
+    <h3>Miguel Angel Patiño Franco</h3>
+  </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import HelloWorld from "./components/HelloWorld.vue";
+import { defineComponent } from "vue";
+import CharactersList from "./components/CharactersList.vue";
 
-@Options({
+export default defineComponent({
+  name: "App",
   components: {
-    HelloWorld,
+    CharactersList,
   },
-})
-export default class App extends Vue {}
+});
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

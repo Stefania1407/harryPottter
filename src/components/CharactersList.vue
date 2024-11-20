@@ -177,7 +177,7 @@ export default defineComponent({
 
 .character-name {
   font-weight: bold;
-  cursor: pointer;
+  cursor: pointer; 
   color: #5a3e2b;
   font-size: 1em;
 }
